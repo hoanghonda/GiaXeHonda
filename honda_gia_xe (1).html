@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bảng Giá Xe Honda Việt Nam 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+  :root {
+    --red: #c0392b; --red-light: #fdf2f1;
+    --gray-900: #1a1a1a; --gray-700: #444; --gray-500: #777;
+    --gray-300: #d5d5d5; --gray-100: #f5f5f5; --gray-50: #fafafa;
+    --total-bg: #f0f7f0; --total-text: #2d6a2d;
+    --mtoc-color: #1a5fa8; --mtoc-bg: #eef4fb;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Be Vietnam Pro',sans-serif;background:var(--gray-50);color:var(--gray-900);font-size:13px;line-height:1.5}
+  .header{background:var(--gray-900);color:white;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .header-left{display:flex;align-items:center;gap:16px}
+  .honda-logo{background:var(--red);color:white;font-size:18px;font-weight:600;width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;letter-spacing:-1px;flex-shrink:0}
+  .header-title{font-size:16px;font-weight:500}
+  .header-sub{font-size:12px;color:#aaa;margin-top:2px}
+  .header-badge{font-size:11px;padding:4px 10px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:20px;color:#ccc}
+  .controls-bar{background:white;border-bottom:1px solid var(--gray-300);padding:14px 32px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+  .ctrl-group{display:flex;align-items:center;gap:8px}
+  .ctrl-label{font-size:12px;color:var(--gray-500);white-space:nowrap;font-weight:500}
+  select,input[type=text]{font-family:'Be Vietnam Pro',sans-serif;font-size:12.5px;padding:6px 10px;border:1px solid var(--gray-300);border-radius:6px;background:var(--gray-50);color:var(--gray-900);outline:none;transition:border-color .15s}
+  select:focus,input[type=text]:focus{border-color:var(--red)}
+  input[type=text]{width:220px}
+  .filter-bar{background:white;border-bottom:1px solid var(--gray-300);padding:10px 32px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .filter-label{font-size:11px;color:var(--gray-500);font-weight:500;margin-right:4px;text-transform:uppercase;letter-spacing:.05em}
+  .fbtn{font-family:'Be Vietnam Pro',sans-serif;font-size:12px;padding:4px 14px;border:1px solid var(--gray-300);border-radius:20px;cursor:pointer;background:white;color:var(--gray-700);transition:all .15s}
+  .fbtn:hover{border-color:var(--red);color:var(--red)}
+  .fbtn.active{background:var(--red);color:white;border-color:var(--red);font-weight:500}
+  .stats-bar{padding:8px 32px;background:var(--gray-50);border-bottom:1px solid var(--gray-300);display:flex;gap:20px;flex-wrap:wrap}
+  .stat{font-size:12px;color:var(--gray-500)}
+  .stat b{color:var(--gray-900);font-weight:600}
+  .stat-mtoc{color:var(--mtoc-color)}
+  .stat-mtoc b{color:var(--mtoc-color)}
+  .note-bar{background:#fffbf0;border-bottom:1px solid #e8dfc0;padding:10px 32px;font-size:11.5px;color:#7a6520;line-height:1.7}
+  .note-bar b{font-weight:600;color:#5a4a10}
+  .main{padding:20px 32px 40px}
+  .section-title{font-size:14px;font-weight:600;margin:24px 0 8px;padding-bottom:8px;border-bottom:2px solid var(--gray-900);color:var(--gray-900);display:flex;align-items:center;gap:8px}
+  .section-count{font-size:11px;font-weight:400;color:var(--gray-500);background:var(--gray-100);padding:2px 8px;border-radius:10px;margin-left:auto}
+  .tbl-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--gray-300);margin-bottom:4px}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  thead{position:sticky;top:0}
+  th{background:var(--gray-900);color:#ccc;font-weight:500;font-size:11px;text-align:left;padding:9px 12px;white-space:nowrap;text-transform:uppercase;letter-spacing:.04em;border-right:1px solid #333}
+  th:last-child{border-right:none}
+  th.num{text-align:right}
+  td{padding:7px 12px;border-bottom:1px solid var(--gray-100);border-right:1px solid var(--gray-100);vertical-align:middle;color:var(--gray-900)}
+  td:last-child{border-right:none}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#fdf8f8}
+  .td-model{font-weight:600;font-size:12.5px;border-right:1px solid var(--gray-300) !important;background:var(--gray-50);vertical-align:middle !important}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .td-total{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;background:var(--total-bg);color:var(--total-text);font-weight:600}
+  .td-total-na{text-align:right;color:var(--gray-500);font-style:italic;background:var(--gray-50)}
+  .mtoc-code{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--mtoc-color);background:var(--mtoc-bg);padding:2px 6px;border-radius:4px;display:inline-block;margin:1px 0;white-space:nowrap}
+  .mtoc-hl{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:white;background:var(--mtoc-color);padding:2px 6px;border-radius:4px;display:inline-block;margin:1px 0;white-space:nowrap;font-weight:500}
+  .mtoc-none{font-size:11px;color:var(--gray-500);font-style:italic}
+  .badge-ev{font-size:9px;padding:2px 6px;border-radius:10px;background:#e8f5e9;color:#2e7d32;font-weight:600;margin-left:4px;vertical-align:middle;text-transform:uppercase;letter-spacing:.04em}
+  .badge-new{font-size:9px;padding:2px 6px;border-radius:10px;background:#e3f0fb;color:#1565c0;font-weight:600;margin-left:4px;vertical-align:middle;text-transform:uppercase;letter-spacing:.04em}
+  .muted{color:var(--gray-500);font-style:italic}
+  .no-result{padding:48px;text-align:center;color:var(--gray-500);font-size:14px}
+  .footer{background:var(--gray-900);color:#666;text-align:center;padding:16px 32px;font-size:11.5px;line-height:1.8}
+  .footer b{color:#aaa;font-weight:500}
+  @media(max-width:768px){.header,.controls-bar,.filter-bar,.stats-bar,.note-bar,.main{padding-left:16px;padding-right:16px}input[type=text]{width:160px}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="honda-logo">H</div>
+    <div>
+      <div class="header-title">Bảng Giá Xe Honda Việt Nam 2026</div>
+      <div class="header-sub">Giá đề xuất · Lệ phí trước bạ · Phí biển số · Mã MTOC</div>
+    </div>
+  </div>
+  <div class="header-badge">Cập nhật tháng 3/2026</div>
+</div>
+
+<div class="controls-bar">
+  <div class="ctrl-group">
+    <span class="ctrl-label">Khu vực đăng ký:</span>
+    <select id="kv">
+      <option value="1">KV I – Hà Nội & TP.HCM</option>
+      <option value="2" selected>KV II – Tỉnh thành khác</option>
+    </select>
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Tìm kiếm:</span>
+    <input type="text" id="search" placeholder="Tên xe hoặc mã MTOC..." />
+  </div>
+</div>
+
+<div class="filter-bar">
+  <span class="filter-label">Loại xe:</span>
+  <button class="fbtn active" data-cat="all">Tất cả</button>
+  <button class="fbtn" data-cat="tay-ga">🛵 Xe tay ga</button>
+  <button class="fbtn" data-cat="xe-so">🏍️ Xe số</button>
+  <button class="fbtn" data-cat="con-tay">⚙️ Xe côn tay</button>
+  <button class="fbtn" data-cat="pkl">🏎️ Phân khối lớn</button>
+  <button class="fbtn" data-cat="dien">⚡ Xe điện</button>
+</div>
+
+<div class="stats-bar" id="statbar"></div>
+
+<div class="note-bar">
+  <b>Lệ phí trước bạ:</b> 2% × giá đề xuất (ước tính tham khảo – giá tính LPTB thực tế do UBND tỉnh ban hành). &nbsp;|&nbsp;
+  <b>Phí biển số KV I</b> (Hà Nội & TP.HCM): ≤15tr → 700k · 15–40tr → 1,4tr · &gt;40tr → 2,8tr. &nbsp;|&nbsp;
+  <b>Phí biển số KV II</b> (các tỉnh thành khác): <b>150.000đ</b> thống nhất mọi mức giá.
+</div>
+
+<div class="main" id="main"></div>
+
+<div class="footer">
+  <b>Nguồn:</b> Honda Việt Nam – honda.com.vn &nbsp;|&nbsp;
+  Giá lăn bánh là <b>ước tính tham khảo</b>, không phải giá giao dịch chính thức.<br>
+  Dữ liệu tổng hợp tháng 3/2026 · Mọi thắc mắc liên hệ bộ phận kinh doanh.
+</div>
+
+<script>
+const rows=[
+  {cat:"tay-ga",m:"ADV350",isNew:true,v:"ADV350",c:"Đen/Đỏ Đen",g:165990000,mtoc:["ADV350K2LKV02NH436","ADV350K2LKV02R372"]},
+  {cat:"tay-ga",m:"ADV350",isNew:true,v:"ADV350",c:"Đen/Xanh Đen",g:165990000,mtoc:["ADV350K2LKV02NH436","ADV350K2LKV02PB413"]},
+  {cat:"tay-ga",m:"SH350i",v:"Thể Thao",c:"Xám Đen",g:152690000,mtoc:["SH350K1WKV10NHC60"]},
+  {cat:"tay-ga",m:"SH350i",v:"Thể Thao",c:"Xanh Đen",g:152690000,mtoc:["SH350K1WKV10GY163"]},
+  {cat:"tay-ga",m:"SH350i",v:"Đặc Biệt",c:"Xám Đen",g:152190000,mtoc:["SH350K1WKV11NHD03"]},
+  {cat:"tay-ga",m:"SH350i",v:"Cao Cấp",c:"Trắng Đen",g:151190000,mtoc:["SH350K1WKV00NHD01"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Thể Thao",c:"Xám Đen Đỏ",g:104290000,mtoc:["SH160K0SPV45NHC60"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Thể Thao",c:"Xanh Đen Đỏ",g:104290000,mtoc:["SH160K0SPV45GY163"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Đặc Biệt",c:"Xám Đen",g:103790000,mtoc:["SH160K0SPV25NHD03"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Cao Cấp",c:"Trắng Đen",g:102590000,mtoc:["SH160K0SPV05NHD14"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Cao Cấp",c:"Đỏ Đen",g:102590000,mtoc:["SH160K0SPV05R368"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Tiêu Chuẩn",c:"Đen",g:95090000,mtoc:["SH160K0SPV00NHB25"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Tiêu Chuẩn",c:"Trắng",g:95090000,mtoc:["SH160K0SPV00NHD01"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Thể Thao",c:"Xanh Đen Đỏ",g:85506545,mtoc:["SH125K0RPV45GY163"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Thể Thao",c:"Xám Đen Đỏ",g:85506545,mtoc:["SH125K0RPV45NHC60"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Đặc Biệt",c:"Xám Đen",g:85015637,mtoc:["SH125K0RPV25NHD03"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Cao Cấp",c:"Trắng Đen",g:83837455,mtoc:["SH125K0RPV05NHD14"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Tiêu Chuẩn",c:"Đen",g:76473818,mtoc:["SH125K0RPV00NHB25"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Tiêu Chuẩn",c:"Trắng",g:76473818,mtoc:["SH125K0RPV00NHD01"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Tiêu Chuẩn",c:"Đỏ",g:76473818,mtoc:["SH125K0RPV00R368"]},
+  {cat:"tay-ga",m:"SH Mode 125",v:"Thể Thao",c:"Xám Đen",g:63808363,mtoc:["FSH125K1NGV17NHC60"]},
+  {cat:"tay-ga",m:"SH Mode 125",v:"Đặc Biệt",c:"Đen",g:63317455,mtoc:["FSH125K1NGV13NHA76"]},
+  {cat:"tay-ga",m:"SH Mode 125",v:"Đặc Biệt",c:"Bạc Đen",g:63317455,mtoc:["FSH125K1NGV13NHB18"]},
+  {cat:"tay-ga",m:"SH Mode 125",v:"Cao Cấp",c:"Đỏ Đen",g:62139273,mtoc:["FSH125K1NGV16R368"]},
+  {cat:"tay-ga",m:"SH Mode 125",v:"Cao Cấp",c:"Xanh Đen",g:62139273,mtoc:["FSH125K1NGV16PB421"]},
+  {cat:"tay-ga",m:"SH Mode 125",v:"Tiêu Chuẩn",c:"Đỏ",g:57132000,mtoc:["FSH125K1NGV01R368"]},
+  {cat:"tay-ga",m:"SH Mode 125",v:"Tiêu Chuẩn",c:"Trắng",g:57132000,mtoc:["FSH125K1NGV01NHB35"]},
+  {cat:"tay-ga",m:"SH Mode 125",v:"Tiêu Chuẩn",c:"Xanh",g:57132000,mtoc:["FSH125K1NGV01PB421"]},
+  {cat:"tay-ga",m:"Vario 160",v:"Thể Thao",c:"Xám Đen Bạc",g:56490000,mtoc:["ACB160K2SGV11NHC60"]},
+  {cat:"tay-ga",m:"Vario 160",v:"Đặc Biệt",c:"Đỏ Đen Bạc",g:55990000,mtoc:[]},
+  {cat:"tay-ga",m:"Vario 160",v:"Cao Cấp",c:"Xanh Đen Bạc",g:52490000,mtoc:[]},
+  {cat:"tay-ga",m:"Vario 160",v:"Tiêu Chuẩn",c:"Đen Bạc",g:51990000,mtoc:[]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 160 – Thể Thao",c:"Trắng Đỏ Đen",g:58590000,mtoc:["ACA160K2ZGV03NHD14"]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 160 – Thể Thao",c:"Xám Đỏ Đen",g:58590000,mtoc:["ACA160K2ZFV03NHC60"]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 160 – Đặc Biệt",c:"Đen Xám",g:58090000,mtoc:["ACA160K2ZGV01NHA76"]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 160 – Tiêu Chuẩn",c:"Đỏ Đen",g:56890000,mtoc:["ACA160K2ZGV00R368"]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Marvel Spider-Man",c:"Đỏ Đen",g:48099273,mtoc:[]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Marvel Venom",c:"Đen",g:48099273,mtoc:[]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Thể Thao",c:"Trắng Đỏ Đen",g:47804727,mtoc:["ACA125K3AGV08NHD14"]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Thể Thao",c:"Xám Đỏ Đen",g:47804727,mtoc:["ACA125K3AGV08NHC60"]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Đặc Biệt",c:"Đen Xám",g:43386545,mtoc:["ACA125K3AGV01NHA76"]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Đặc Biệt",c:"Xanh Đen Xám",g:43386545,mtoc:["ACA125K3AGV01PB434"]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Tiêu Chuẩn",c:"Đen",g:42208363,mtoc:["ACA125K3AGV00NHB25"]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Tiêu Chuẩn",c:"Đỏ Đen",g:42208363,mtoc:["ACA125K3AGV00R368"]},
+  {cat:"tay-ga",m:"LEAD ABS",isNew:true,v:"Đặc Biệt",c:"Đen Nâu",g:45644727,mtoc:["NHX125K2TJV02NHA76"]},
+  {cat:"tay-ga",m:"LEAD ABS",isNew:true,v:"Đặc Biệt",c:"Xanh Đen",g:45644727,mtoc:["NHX125K2TJV02NHC34"]},
+  {cat:"tay-ga",m:"LEAD ABS",isNew:true,v:"Đặc Biệt",c:"Bạc Đen",g:45644727,mtoc:["NHX125K2TJV02NHB18"]},
+  {cat:"tay-ga",m:"LEAD ABS",isNew:true,v:"Cao Cấp",c:"Trắng Đen",g:41717455,mtoc:["NHX125K2TJV01NHD14"]},
+  {cat:"tay-ga",m:"LEAD ABS",isNew:true,v:"Tiêu Chuẩn",c:"Đỏ Đen",g:39557455,mtoc:["NHX125K2TJV00R368"]},
+  {cat:"tay-ga",m:"Vario 125",v:"Thể Thao",c:"Xanh Đen",g:41226545,mtoc:["ACB125K2VGV02PB406"]},
+  {cat:"tay-ga",m:"Vario 125",v:"Đặc Biệt",c:"Đen",g:40735637,mtoc:["ACB125K2VGV03NH436"]},
+  {cat:"tay-ga",m:"Vario 125",v:"Đặc Biệt",c:"Đỏ Đen",g:40735637,mtoc:["ACB125K2VRV04R378M"]},
+  {cat:"tay-ga",m:"Vision",isNew:true,v:"Thể Thao",c:"Bạc Đen",g:36612000,mtoc:["NSC110K2CNV03NHB18","NSC110K2CNV08NHB18"]},
+  {cat:"tay-ga",m:"Vision",isNew:true,v:"Thể Thao",c:"Đen",g:36612000,mtoc:["NSC110K2CNV03NHA76","NSC110K2CNV08NHA76"]},
+  {cat:"tay-ga",m:"Vision",isNew:true,v:"Thể Thao",c:"Xám Đen",g:36612000,mtoc:["NSC110K2CNV03NHC60","NSC110K2CNV08NHC60"]},
+  {cat:"tay-ga",m:"Vision",isNew:true,v:"Đặc Biệt",c:"Nâu Xám",g:34353818,mtoc:["NSC110K2CNV06YR381","NSC110K2CNV01YR381"]},
+  {cat:"tay-ga",m:"Vision",isNew:true,v:"Cao Cấp",c:"Đỏ Xám",g:32979273,mtoc:["NSC110K2CNV02R368","NSC110K2CNV07R368"]},
+  {cat:"tay-ga",m:"Vision",isNew:true,v:"Tiêu Chuẩn",c:"Trắng Đen",g:31310182,mtoc:["NSC110K2CNV05NHD01","NSC110K2CNV00NHD01"]},
+  {cat:"xe-so",m:"Super Cub C125",v:"Đặc Biệt",c:"Đen Mờ",g:87273818,mtoc:["C125K0GJ161NH303"]},
+  {cat:"xe-so",m:"Super Cub C125",v:"Tiêu Chuẩn",c:"Xanh Xám – Yên Nâu",g:86292000,mtoc:["C125K0GJ061B241"]},
+  {cat:"xe-so",m:"Super Cub C125",v:"Tiêu Chuẩn",c:"Xanh Dương – Yên Đỏ",g:86292000,mtoc:["C125K0GJ061NHB95"]},
+  {cat:"xe-so",m:"CT125",isNew:true,v:"CT125",c:"Xám Đen",g:85801091,mtoc:[]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Đặc Biệt – Phanh đĩa, vành đúc",c:"Xanh Đen",g:32193818,mtoc:[]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Đặc Biệt – Phanh đĩa, vành đúc",c:"Đen Vàng",g:32193818,mtoc:[]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Đặc Biệt – Phanh cơ, vành nan hoa",c:"Xanh Đen Bạc",g:32193818,mtoc:[]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Đặc Biệt – Phanh cơ, vành nan hoa",c:"Bạc Đen Xám",g:32193818,mtoc:[]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Cao Cấp – Phanh đĩa, vành đúc",c:"Đỏ Đen",g:31702909,mtoc:[]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Cao Cấp – Phanh đĩa, vành đúc",c:"Trắng Đen",g:31702909,mtoc:[]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Cao Cấp – Phanh cơ, vành nan hoa",c:"Xám Đen Xanh",g:31702909,mtoc:[]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Cao Cấp – Phanh cơ, vành nan hoa",c:"Đỏ Đen Trắng",g:31702909,mtoc:[]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Tiêu Chuẩn – Phanh đĩa, vành nan hoa",c:"Xanh Đen",g:30524727,mtoc:["AFS125K73Y0V0PB421"]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Tiêu Chuẩn – Phanh cơ, vành nan hoa",c:"Bạc",g:30524727,mtoc:["AFS125K73Y1V1NHC35"]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Tiêu Chuẩn – Phanh cơ, vành nan hoa",c:"Đỏ",g:30524727,mtoc:["AFS125K73Y0V1R350"]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Tiêu Chuẩn – Phanh cơ, vành nan hoa",c:"Trắng",g:30524727,mtoc:["AFS125K73Y0V1NHB55"]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Tiêu Chuẩn – Phanh cơ, vành nan hoa",c:"Xám Đen",g:30524727,mtoc:["AFS125K73Y0V1NHC26"]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Tiêu Chuẩn – Phanh cơ, vành nan hoa",c:"Xanh Xám",g:30524727,mtoc:["AFS125K73Y1V1NHC34"]},
+  {cat:"xe-so",m:"Wave RSX",isNew:true,v:"Thể Thao",c:"Xanh Đen",g:25566545,mtoc:["AFP110K90PV02PB421"]},
+  {cat:"xe-so",m:"Wave RSX",isNew:true,v:"Thể Thao",c:"Đỏ Đen",g:25566545,mtoc:["AFP110K90PV02R389"]},
+  {cat:"xe-so",m:"Wave RSX",isNew:true,v:"Thể Thao",c:"Xám Đen",g:25566545,mtoc:["AFP110K90PV02NHC60"]},
+  {cat:"xe-so",m:"Wave RSX",isNew:true,v:"Đặc Biệt",c:"Đen",g:23602909,mtoc:["AFP110K90PV01NHB25"]},
+  {cat:"xe-so",m:"Wave RSX",isNew:true,v:"Đặc Biệt",c:"Đỏ Đen",g:23602909,mtoc:["AFP110K90PV01R368"]},
+  {cat:"xe-so",m:"Wave RSX",isNew:true,v:"Tiêu Chuẩn",c:"Đen",g:22032000,mtoc:["AFP110K90PV00NHA76"]},
+  {cat:"xe-so",m:"Blade",v:"Thể Thao",c:"Đen",g:21943637,mtoc:["AFS110K57M0A8NHA76"]},
+  {cat:"xe-so",m:"Blade",v:"Thể Thao",c:"Đen Đỏ",g:21943637,mtoc:["AFS110K57M0A8R389"]},
+  {cat:"xe-so",m:"Blade",v:"Thể Thao",c:"Đen Xanh",g:21943637,mtoc:["AFS110K57M0A8PB421"]},
+  {cat:"xe-so",m:"Blade",v:"Đặc Biệt",c:"Đen",g:20470909,mtoc:["AFS110K57M0A0NHA76"]},
+  {cat:"xe-so",m:"Blade",v:"Tiêu Chuẩn",c:"Đen Đỏ",g:18900000,mtoc:["AFS110K57M0A3R389"]},
+  {cat:"xe-so",m:"Blade",v:"Tiêu Chuẩn",c:"Đen Xanh",g:18900000,mtoc:["AFS110K57M0A3PB421"]},
+  {cat:"xe-so",m:"Wave Alpha – Cổ Điển",v:"Cổ Điển",c:"Xám Đen",g:18939273,mtoc:["AFB110K89YV41NHC26"]},
+  {cat:"xe-so",m:"Wave Alpha – Cổ Điển",v:"Cổ Điển",c:"Xám Trắng",g:18939273,mtoc:["AFB110K89VV41NHC60"]},
+  {cat:"xe-so",m:"Wave Alpha 110",v:"Đặc Biệt",c:"Đen Nhám",g:18742909,mtoc:["AFB110K89RV30NHA76"]},
+  {cat:"xe-so",m:"Wave Alpha 110",v:"Tiêu Chuẩn",c:"Trắng",g:17859273,mtoc:["AFB110K89RV00NHB55"]},
+  {cat:"xe-so",m:"Wave Alpha 110",v:"Tiêu Chuẩn",c:"Xanh",g:17859273,mtoc:["AFB110K89RV00PB421"]},
+  {cat:"xe-so",m:"Wave Alpha 110",v:"Tiêu Chuẩn",c:"Đỏ",g:17859273,mtoc:["AFB110K89RV00R389"]},
+  {cat:"con-tay",m:"CBR150R",v:"Thể Thao",c:"Đỏ",g:73790000,mtoc:[]},
+  {cat:"con-tay",m:"CBR150R",v:"Đặc Biệt",c:"Đen Xám",g:73290000,mtoc:[]},
+  {cat:"con-tay",m:"CBR150R",v:"Tiêu Chuẩn",c:"Đen Đỏ",g:72290000,mtoc:[]},
+  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Thể Thao",c:"Đỏ Đen Trắng",g:50560000,mtoc:["FS150K2PNV16R389"]},
+  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Đặc Biệt",c:"Đen",g:50060000,mtoc:["FS150K2PNV15NHA76"]},
+  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Đặc Biệt",c:"Đỏ Đen",g:50060000,mtoc:["FS150K2PNV15R406"]},
+  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Đặc Biệt",c:"Xám Đen",g:50060000,mtoc:["FS150K2PNV15NHC60"]},
+  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Đặc Biệt",c:"Xanh Đen",g:50060000,mtoc:["FS150K2PNV15GY163"]},
+  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Tiêu Chuẩn",c:"Đen Bạc",g:46160000,mtoc:["FS150K2PNV10NHB25"]},
+  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Tiêu Chuẩn",c:"Đỏ Đen",g:46160000,mtoc:["FS150K2PNV10R389"]},
+  {cat:"pkl",m:"Gold Wing 2025",isNew:true,v:"Tiêu Chuẩn",c:"Vàng Bạc Đen / Đỏ Đen",g:1231500000,mtoc:[]},
+  {cat:"pkl",m:"CBR1000RR-R Fireblade SP 2024",v:"SP",c:"Đỏ Xanh Trắng",g:1051000000,mtoc:[]},
+  {cat:"pkl",m:"Africa Twin 2025 – Adventure Sports",isNew:true,v:"Adventure Sports",c:"Trắng Xanh Đen",g:620990000,mtoc:[]},
+  {cat:"pkl",m:"Africa Twin 2025 – Tiêu chuẩn",isNew:true,v:"Tiêu Chuẩn",c:"Đỏ Đen",g:540990000,mtoc:[]},
+  {cat:"pkl",m:"CB1000R 2023",v:"Black Edition",c:"Đen",g:525500000,mtoc:[]},
+  {cat:"pkl",m:"CB1000R 2023",v:"Tiêu Chuẩn",c:"Xanh Đen / Đỏ Đen",g:525500000,mtoc:[]},
+  {cat:"pkl",m:"Rebel 1100 2025",isNew:true,v:"DCT",c:"Đen",g:399990000,mtoc:[]},
+  {cat:"pkl",m:"CB1000 Hornet",isNew:true,v:"SP",c:"Đen",g:339900000,mtoc:[]},
+  {cat:"pkl",m:"Transalp 2025",isNew:true,v:"Tiêu Chuẩn",c:"Trắng Đen / Đen",g:299990000,mtoc:[]},
+  {cat:"pkl",m:"CBR650R 2024",v:"Tiêu Chuẩn",c:"Đỏ / Đen",g:264990000,mtoc:[]},
+  {cat:"pkl",m:"CB650R 2024",v:"Tiêu Chuẩn",c:"Đỏ Đen Xám / Đen Bạc",g:256990000,mtoc:[]},
+  {cat:"pkl",m:"NX500",v:"Tiêu Chuẩn",c:"Đỏ Đen / Đen / Trắng Đen",g:194290000,mtoc:[]},
+  {cat:"pkl",m:"CBR500R 2024",v:"Tiêu Chuẩn",c:"Đen / Đỏ",g:192990000,mtoc:[]},
+  {cat:"pkl",m:"CB500 Hornet",v:"Tiêu Chuẩn",c:"Đen / Đỏ Đen / Trắng Đen",g:184990000,mtoc:[]},
+  {cat:"pkl",m:"REBEL 500 2025",isNew:true,v:"Tiêu Chuẩn",c:"Đen / Trắng / Xám",g:181300000,mtoc:[]},
+  {cat:"pkl",m:"CL500",isNew:true,v:"Tiêu Chuẩn",c:"Đen / Nâu Đen",g:180990000,mtoc:[]},
+  {cat:"pkl",m:"CB350 H'ness",isNew:true,v:"CB350 H'ness",c:"Xám Đen / Đỏ Đen",g:129990000,mtoc:[]},
+  {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Thể Thao",c:"Xám",g:26803637,mtoc:["UGH9001GJRFV01NHC60"]},
+  {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Thể Thao",c:"Xanh",g:26803637,mtoc:["UGH9001GJRFV01GY163"]},
+  {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Đặc Biệt",c:"Bạc",g:26607273,mtoc:["UGH9001GJRFV02NHB18"]},
+  {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Cao Cấp",c:"Đen",g:26410909,mtoc:["UGH9001GJRFV00NHB25"]},
+  {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Cao Cấp",c:"Đỏ",g:26410909,mtoc:["UGH9001GJRFV00R368"]},
+  {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Cao Cấp",c:"Trắng",g:26410909,mtoc:["UGH9001GJRFV00NHD01"]},
+  {cat:"dien",m:"CUV e:",isNew:true,isEV:true,v:"Kèm 2 pin + 2 sạc",c:"—",g:65000000,mtoc:[]},
+  {cat:"dien",m:"CUV e:",isNew:true,isEV:true,v:"Không kèm pin (thuê 250k/tháng)",c:"—",g:45000000,mtoc:[]},
+  {cat:"dien",m:"Honda UC3",isNew:true,isEV:true,v:"Dự kiến mở bán tháng 6/2026",c:"—",g:null,mtoc:[]}
+];
+
+const catLabels={"tay-ga":"🛵 Xe tay ga","xe-so":"🏍️ Xe số","con-tay":"⚙️ Xe côn tay","pkl":"🏎️ Xe phân khối lớn","dien":"⚡ Xe điện"};
+const catOrder=["tay-ga","xe-so","con-tay","pkl","dien"];
+
+function lpTB(g){return Math.round(g*0.02);}
+function lpBien(g,kv){
+  if(kv==2) return 150000;
+  if(g<=15000000) return 700000;
+  if(g<=40000000) return 1400000;
+  return 2800000;
+}
+function fmt(n){if(n===null)return"—";return n.toLocaleString('vi-VN')+" đ";}
+
+let activeCat="all",searchQ="";
+function getKv(){return parseInt(document.getElementById('kv').value);}
+
+function render(){
+  const kv=getKv(),q=searchQ.toLowerCase().trim();
+  const main=document.getElementById('main');
+  let html="",shown=0,withMtoc=0;
+  for(const cat of catOrder){
+    if(activeCat!=="all"&&activeCat!==cat) continue;
+    let catRows=rows.filter(r=>r.cat===cat);
+    if(q) catRows=catRows.filter(r=>
+      r.m.toLowerCase().includes(q)||r.v.toLowerCase().includes(q)||
+      r.c.toLowerCase().includes(q)||r.mtoc.some(mc=>mc.toLowerCase().includes(q))
+    );
+    if(!catRows.length) continue;
+    const models=[...new Set(catRows.map(r=>r.m))];
+    html+=`<div class="section-title">${catLabels[cat]}<span class="section-count">${catRows.length} dòng</span></div>
+    <div class="tbl-wrap"><table>
+    <thead><tr>
+      <th style="width:140px">Mẫu xe</th>
+      <th style="width:195px">Phiên bản</th>
+      <th style="width:110px">Màu sắc</th>
+      <th style="width:160px">Mã MTOC</th>
+      <th class="num" style="width:120px">Giá đề xuất</th>
+      <th class="num" style="width:100px">LPTB 2%</th>
+      <th class="num" style="width:105px">Phí biển số</th>
+      <th class="num" style="width:125px">Tổng lăn bánh</th>
+    </tr></thead><tbody>`;
+    for(const modelName of models){
+      const mRows=catRows.filter(r=>r.m===modelName);
+      mRows.forEach((r,i)=>{
+        const tb=r.g!==null?lpTB(r.g):null;
+        const bs=r.g!==null?lpBien(r.g,kv):null;
+        const total=r.g!==null?r.g+tb+bs:null;
+        shown++;
+        if(r.mtoc.length) withMtoc+=r.mtoc.length;
+        const mtocHtml=r.mtoc.length
+          ?r.mtoc.map(mc=>`<span class="${q&&mc.toLowerCase().includes(q)?'mtoc-hl':'mtoc-code'}">${mc}</span>`).join('<br>')
+          :`<span class="mtoc-none">chưa có</span>`;
+        html+=`<tr>`;
+        if(i===0) html+=`<td class="td-model" rowspan="${mRows.length}">${modelName}${r.isNew?'<span class="badge-new">Mới</span>':''}${r.isEV?'<span class="badge-ev">Điện</span>':''}</td>`;
+        if(r.g===null){
+          html+=`<td class="muted">${r.v}</td><td class="muted">—</td><td>${mtocHtml}</td><td class="muted" style="text-align:right">—</td><td class="muted" style="text-align:right">—</td><td class="muted" style="text-align:right">—</td><td class="td-total-na">Chưa có giá</td>`;
+        } else {
+          html+=`<td>${r.v}</td><td>${r.c}</td><td>${mtocHtml}</td>
+          <td class="num">${fmt(r.g)}</td>
+          <td class="num">${fmt(tb)}</td>
+          <td class="num">${fmt(bs)}</td>
+          <td class="td-total">${fmt(total)}</td>`;
+        }
+        html+=`</tr>`;
+      });
+    }
+    html+=`</tbody></table></div>`;
+  }
+  if(!html) html=`<div class="no-result">Không tìm thấy kết quả cho "<b>${searchQ}</b>"</div>`;
+  main.innerHTML=html;
+  document.getElementById('statbar').innerHTML=
+    `<span class="stat">Hiển thị <b>${shown}</b> dòng</span>
+     <span class="stat stat-mtoc">Có mã MTOC: <b>${withMtoc}</b></span>
+     ${q?`<span class="stat" style="color:var(--mtoc-color)">Từ khoá: <b>"${searchQ}"</b></span>`:''}`;
+}
+
+document.getElementById('kv').addEventListener('change',render);
+document.getElementById('search').addEventListener('input',function(){searchQ=this.value;render();});
+document.querySelectorAll('.fbtn').forEach(btn=>btn.addEventListener('click',function(){
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+  this.classList.add('active');
+  activeCat=this.dataset.cat;
+  render();
+}));
+render();
+</script>
+</body>
+</html>
