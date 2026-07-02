@@ -35,7 +35,10 @@
     --red: #c0392b;
     --gray-900: #1a1a1a; --gray-700: #3d3d3d; --gray-500: #6e6e73;
     --gray-300: #d2d2d7; --gray-100: #f2f2f7; --gray-50: #fafafa;
+    --row-hover: #eceef2;
     --total-bg: #f0f7f0; --total-text: #1a5c1a;
+    --cogs-bg: #f7f7fa; --cogs-text: #6e6e73;
+    --margin-bg: #fff4ec; --margin-text: #b25a18;
     --mtoc-color: #0066cc; --mtoc-bg: #f0f6ff;
     --shadow-sm: 0 1px 4px rgba(0,0,0,0.06), 0 2px 10px rgba(0,0,0,0.05);
   }
@@ -264,7 +267,7 @@
   }
   td:last-child { border-right: none; }
   tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #fdf6f5; }
+  tr.row-hl td { background: var(--row-hover); }
 
   .td-model {
     font-size: var(--ts-sm);
@@ -306,6 +309,31 @@
     font-style: italic;
     background: var(--gray-50);
   }
+
+  /* COGS — giá mua vào bán buôn (đã gồm VAT) */
+  .td-cogs {
+    text-align: right;
+    font-variant-numeric: var(--num);
+    font-feature-settings: "tnum" 1, "lnum" 1;
+    white-space: nowrap;
+    font-size: var(--ts-sm);
+    font-weight: var(--fw-regular);
+    color: var(--cogs-text);
+    background: var(--cogs-bg);
+  }
+  /* Biên độ — giá đề xuất − COGS */
+  .td-margin {
+    text-align: right;
+    font-variant-numeric: var(--num);
+    font-feature-settings: "tnum" 1, "lnum" 1;
+    white-space: nowrap;
+    font-size: var(--ts-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--margin-text);
+    background: var(--margin-bg);
+  }
+  .cogs-na { color: var(--gray-300); font-style: normal; }
 
   /* MTOC — monospace, consistent size */
   .mtoc-code {
@@ -408,15 +436,15 @@
       <div class="header-sub">Giá đề xuất · Lệ phí trước bạ · Phí biển số · Mã MTOC</div>
     </div>
   </div>
-  <div class="header-badge">Cập nhật tháng 3/2026</div>
+  <div class="header-badge">Bảng giá cập nhật đến hết 30/06/2026</div>
 </div>
 
 <div class="controls-bar">
   <div class="ctrl-group">
     <span class="ctrl-label">Khu vực đăng ký:</span>
     <select id="kv">
-      <option value="1">KV I – Hà Nội & TP.HCM</option>
-      <option value="2" selected>KV II – Tỉnh thành khác</option>
+      <option value="1" selected>KV I – Hà Nội & TP.HCM</option>
+      <option value="2">KV II – Tỉnh thành khác</option>
     </select>
   </div>
   <div class="ctrl-group">
@@ -431,16 +459,20 @@
   <button class="fbtn" data-cat="tay-ga">🛵 Xe tay ga</button>
   <button class="fbtn" data-cat="xe-so">🏍️ Xe số</button>
   <button class="fbtn" data-cat="con-tay">⚙️ Xe côn tay</button>
-  <button class="fbtn" data-cat="pkl">🏎️ Phân khối lớn</button>
   <button class="fbtn" data-cat="dien">⚡ Xe điện</button>
 </div>
 
 <div class="stats-bar" id="statbar"></div>
 
 <div class="note-bar">
-  <b>Lệ phí trước bạ:</b> 2% × giá đề xuất (ước tính tham khảo – giá tính LPTB thực tế do UBND tỉnh ban hành). &nbsp;|&nbsp;
+  <b>COGS:</b> giá mua vào bán buôn (giá bán cho HEAD, đã gồm VAT). &nbsp;|&nbsp;
+  <b>Biên độ:</b> Giá đề xuất − COGS. &nbsp;|&nbsp;
+  <b>Lệ phí trước bạ:</b> 2% × giá đề xuất, <b>làm tròn lên 10.000đ</b> (ước tính tham khảo – giá tính LPTB thực tế do UBND tỉnh ban hành). &nbsp;|&nbsp;
   <b>Phí biển số KV I</b> (Hà Nội & TP.HCM): ≤15tr → 700k · 15–40tr → 1,4tr · &gt;40tr → 2,8tr. &nbsp;|&nbsp;
-  <b>Phí biển số KV II</b> (các tỉnh thành khác): <b>150.000đ</b> thống nhất mọi mức giá.
+  <b>Phí biển số KV II</b> (các tỉnh thành khác): <b>150.000đ</b> thống nhất mọi mức giá. <i>Xe điện (ICON e:, CUV e:, UC3) áp cùng biểu phí theo giá trị xe — không có ưu đãi riêng.</i> &nbsp;|&nbsp;
+  <b>Xe điện UC3:</b> bảng hiển thị <b>giá bán lẻ đề xuất</b> (VAT 8%); hiện áp dụng <b>giá kích cầu</b> (giảm 22tr): ĐB 57,92tr · TC 56,545tr — voucher do HVN bù nên Biên độ tính theo giá đề xuất. &nbsp;|&nbsp;
+  <b>CUV e: bản không pin:</b> thuê pin 250.000đ/tháng (sạc tại nhà) hoặc 350.000đ/tháng (đổi pin không giới hạn). &nbsp;|&nbsp;
+  <b>Xe điện ICON e::</b> giá <b>chưa gồm pin</b> (giảm 6tr theo niêm yết mới từ 01/04/2026); thuê pin 245.455đ/tháng + cọc 2tr, hoặc mua pin ~8,84tr (VAT 8%).
 </div>
 
 <div class="main" id="main"></div>
@@ -448,139 +480,140 @@
 <div class="footer">
   <b>Nguồn:</b> Honda Việt Nam – honda.com.vn &nbsp;|&nbsp;
   Giá lăn bánh là <b>ước tính tham khảo</b>, không phải giá giao dịch chính thức.<br>
-  Dữ liệu tổng hợp tháng 3/2026 · Mọi thắc mắc liên hệ bộ phận kinh doanh.
+  Bảng giá xe máy HVN áp dụng từ 01/07/2026 · Mọi thắc mắc liên hệ bộ phận kinh doanh.
 </div>
 
 <script>
 const rows=[
-  {cat:"tay-ga",m:"ADV350",isNew:true,v:"ADV350",c:"Đen/Đỏ Đen",g:165990000,mtoc:["ADV350K2LKV02NH436","ADV350K2LKV02R372"]},
-  {cat:"tay-ga",m:"ADV350",isNew:true,v:"ADV350",c:"Đen/Xanh Đen",g:165990000,mtoc:["ADV350K2LKV02NH436","ADV350K2LKV02PB413"]},
-  {cat:"tay-ga",m:"SH350i",v:"Thể Thao",c:"Xám Đen",g:152690000,mtoc:["SH350K1WKV10NHC60"]},
-  {cat:"tay-ga",m:"SH350i",v:"Thể Thao",c:"Xanh Đen",g:152690000,mtoc:["SH350K1WKV10GY163"]},
-  {cat:"tay-ga",m:"SH350i",v:"Đặc Biệt",c:"Xám Đen",g:152190000,mtoc:["SH350K1WKV11NHD03"]},
-  {cat:"tay-ga",m:"SH350i",v:"Cao Cấp",c:"Trắng Đen",g:151190000,mtoc:["SH350K1WKV00NHD01"]},
-  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Thể Thao",c:"Xám Đen Đỏ",g:104290000,mtoc:["SH160K0SPV45NHC60"]},
-  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Thể Thao",c:"Xanh Đen Đỏ",g:104290000,mtoc:["SH160K0SPV45GY163"]},
-  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Đặc Biệt",c:"Xám Đen",g:103790000,mtoc:["SH160K0SPV25NHD03"]},
-  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Cao Cấp",c:"Trắng Đen",g:102590000,mtoc:["SH160K0SPV05NHD14"]},
-  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Cao Cấp",c:"Đỏ Đen",g:102590000,mtoc:["SH160K0SPV05R368"]},
-  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Tiêu Chuẩn",c:"Đen",g:95090000,mtoc:["SH160K0SPV00NHB25"]},
-  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Tiêu Chuẩn",c:"Trắng",g:95090000,mtoc:["SH160K0SPV00NHD01"]},
-  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Thể Thao",c:"Xanh Đen Đỏ",g:85506545,mtoc:["SH125K0RPV45GY163"]},
-  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Thể Thao",c:"Xám Đen Đỏ",g:85506545,mtoc:["SH125K0RPV45NHC60"]},
-  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Đặc Biệt",c:"Xám Đen",g:85015637,mtoc:["SH125K0RPV25NHD03"]},
-  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Cao Cấp",c:"Trắng Đen",g:83837455,mtoc:["SH125K0RPV05NHD14"]},
-  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Tiêu Chuẩn",c:"Đen",g:76473818,mtoc:["SH125K0RPV00NHB25"]},
-  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Tiêu Chuẩn",c:"Trắng",g:76473818,mtoc:["SH125K0RPV00NHD01"]},
-  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Tiêu Chuẩn",c:"Đỏ",g:76473818,mtoc:["SH125K0RPV00R368"]},
-  {cat:"tay-ga",m:"SH Mode 125",v:"Thể Thao",c:"Xám Đen",g:63808363,mtoc:["FSH125K1NGV17NHC60"]},
-  {cat:"tay-ga",m:"SH Mode 125",v:"Đặc Biệt",c:"Đen",g:63317455,mtoc:["FSH125K1NGV13NHA76"]},
-  {cat:"tay-ga",m:"SH Mode 125",v:"Đặc Biệt",c:"Bạc Đen",g:63317455,mtoc:["FSH125K1NGV13NHB18"]},
-  {cat:"tay-ga",m:"SH Mode 125",v:"Cao Cấp",c:"Đỏ Đen",g:62139273,mtoc:["FSH125K1NGV16R368"]},
-  {cat:"tay-ga",m:"SH Mode 125",v:"Cao Cấp",c:"Xanh Đen",g:62139273,mtoc:["FSH125K1NGV16PB421"]},
-  {cat:"tay-ga",m:"SH Mode 125",v:"Tiêu Chuẩn",c:"Đỏ",g:57132000,mtoc:["FSH125K1NGV01R368"]},
-  {cat:"tay-ga",m:"SH Mode 125",v:"Tiêu Chuẩn",c:"Trắng",g:57132000,mtoc:["FSH125K1NGV01NHB35"]},
-  {cat:"tay-ga",m:"SH Mode 125",v:"Tiêu Chuẩn",c:"Xanh",g:57132000,mtoc:["FSH125K1NGV01PB421"]},
-  {cat:"tay-ga",m:"Vario 160",v:"Thể Thao",c:"Xám Đen Bạc",g:56490000,mtoc:["ACB160K2SGV11NHC60"]},
-  {cat:"tay-ga",m:"Vario 160",v:"Đặc Biệt",c:"Đỏ Đen Bạc",g:55990000,mtoc:[]},
-  {cat:"tay-ga",m:"Vario 160",v:"Cao Cấp",c:"Xanh Đen Bạc",g:52490000,mtoc:[]},
-  {cat:"tay-ga",m:"Vario 160",v:"Tiêu Chuẩn",c:"Đen Bạc",g:51990000,mtoc:[]},
-  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 160 – Thể Thao",c:"Trắng Đỏ Đen",g:58590000,mtoc:["ACA160K2ZGV03NHD14"]},
-  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 160 – Thể Thao",c:"Xám Đỏ Đen",g:58590000,mtoc:["ACA160K2ZFV03NHC60"]},
-  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 160 – Đặc Biệt",c:"Đen Xám",g:58090000,mtoc:["ACA160K2ZGV01NHA76"]},
-  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 160 – Tiêu Chuẩn",c:"Đỏ Đen",g:56890000,mtoc:["ACA160K2ZGV00R368"]},
-  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Marvel Spider-Man",c:"Đỏ Đen",g:48099273,mtoc:[]},
-  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Marvel Venom",c:"Đen",g:48099273,mtoc:[]},
-  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Thể Thao",c:"Trắng Đỏ Đen",g:47804727,mtoc:["ACA125K3AGV08NHD14"]},
-  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Thể Thao",c:"Xám Đỏ Đen",g:47804727,mtoc:["ACA125K3AGV08NHC60"]},
-  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Đặc Biệt",c:"Đen Xám",g:43386545,mtoc:["ACA125K3AGV01NHA76"]},
-  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Đặc Biệt",c:"Xanh Đen Xám",g:43386545,mtoc:["ACA125K3AGV01PB434"]},
-  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Tiêu Chuẩn",c:"Đen",g:42208363,mtoc:["ACA125K3AGV00NHB25"]},
-  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Tiêu Chuẩn",c:"Đỏ Đen",g:42208363,mtoc:["ACA125K3AGV00R368"]},
-  {cat:"tay-ga",m:"LEAD ABS",isNew:true,v:"Đặc Biệt",c:"Đen Nâu",g:45644727,mtoc:["NHX125K2TJV02NHA76"]},
-  {cat:"tay-ga",m:"LEAD ABS",isNew:true,v:"Đặc Biệt",c:"Xanh Đen",g:45644727,mtoc:["NHX125K2TJV02NHC34"]},
-  {cat:"tay-ga",m:"LEAD ABS",isNew:true,v:"Đặc Biệt",c:"Bạc Đen",g:45644727,mtoc:["NHX125K2TJV02NHB18"]},
-  {cat:"tay-ga",m:"LEAD ABS",isNew:true,v:"Cao Cấp",c:"Trắng Đen",g:41717455,mtoc:["NHX125K2TJV01NHD14"]},
-  {cat:"tay-ga",m:"LEAD ABS",isNew:true,v:"Tiêu Chuẩn",c:"Đỏ Đen",g:39557455,mtoc:["NHX125K2TJV00R368"]},
-  {cat:"tay-ga",m:"Vario 125",v:"Thể Thao",c:"Xanh Đen",g:41226545,mtoc:["ACB125K2VGV02PB406"]},
-  {cat:"tay-ga",m:"Vario 125",v:"Đặc Biệt",c:"Đen",g:40735637,mtoc:["ACB125K2VGV03NH436"]},
-  {cat:"tay-ga",m:"Vario 125",v:"Đặc Biệt",c:"Đỏ Đen",g:40735637,mtoc:["ACB125K2VRV04R378M"]},
-  {cat:"tay-ga",m:"Vision",isNew:true,v:"Thể Thao",c:"Bạc Đen",g:36612000,mtoc:["NSC110K2CNV03NHB18","NSC110K2CNV08NHB18"]},
-  {cat:"tay-ga",m:"Vision",isNew:true,v:"Thể Thao",c:"Đen",g:36612000,mtoc:["NSC110K2CNV03NHA76","NSC110K2CNV08NHA76"]},
-  {cat:"tay-ga",m:"Vision",isNew:true,v:"Thể Thao",c:"Xám Đen",g:36612000,mtoc:["NSC110K2CNV03NHC60","NSC110K2CNV08NHC60"]},
-  {cat:"tay-ga",m:"Vision",isNew:true,v:"Đặc Biệt",c:"Nâu Xám",g:34353818,mtoc:["NSC110K2CNV06YR381","NSC110K2CNV01YR381"]},
-  {cat:"tay-ga",m:"Vision",isNew:true,v:"Cao Cấp",c:"Đỏ Xám",g:32979273,mtoc:["NSC110K2CNV02R368","NSC110K2CNV07R368"]},
-  {cat:"tay-ga",m:"Vision",isNew:true,v:"Tiêu Chuẩn",c:"Trắng Đen",g:31310182,mtoc:["NSC110K2CNV05NHD01","NSC110K2CNV00NHD01"]},
-  {cat:"xe-so",m:"Super Cub C125",v:"Đặc Biệt",c:"Đen Mờ",g:87273818,mtoc:["C125K0GJ161NH303"]},
-  {cat:"xe-so",m:"Super Cub C125",v:"Tiêu Chuẩn",c:"Xanh Xám – Yên Nâu",g:86292000,mtoc:["C125K0GJ061B241"]},
-  {cat:"xe-so",m:"Super Cub C125",v:"Tiêu Chuẩn",c:"Xanh Dương – Yên Đỏ",g:86292000,mtoc:["C125K0GJ061NHB95"]},
-  {cat:"xe-so",m:"CT125",isNew:true,v:"CT125",c:"Xám Đen",g:85801091,mtoc:[]},
-  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Tiêu Chuẩn",c:"Xanh Đen",g:30524727,mtoc:["AFS125K73Y0V0PB421"]},
-  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Cao Cấp",c:"Trắng Đen Đỏ",g:31702909,mtoc:["AFS125K73Y0V1NHB55"]},
-  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Cao Cấp",c:"Xám Đen Xanh",g:31702909,mtoc:["AFS125K73Y0V1NHC26"]},
-  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Cao Cấp",c:"Đỏ Đen Trắng",g:31702909,mtoc:["AFS125K73Y0V1R350"]},
-  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Đặc Biệt",c:"Bạc Đen Xám",g:32193818,mtoc:["AFS125K73Y1V1NHC35"]},
-  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Đặc Biệt",c:"Xanh Đen Bạc",g:32193818,mtoc:["AFS125K73Y1V1NHC34"]},
-  {cat:"xe-so",m:"Wave RSX",isNew:true,v:"Thể Thao",c:"Xanh Đen",g:25566545,mtoc:["AFP110K90PV02PB421"]},
-  {cat:"xe-so",m:"Wave RSX",isNew:true,v:"Thể Thao",c:"Đỏ Đen",g:25566545,mtoc:["AFP110K90PV02R389"]},
-  {cat:"xe-so",m:"Wave RSX",isNew:true,v:"Thể Thao",c:"Xám Đen",g:25566545,mtoc:["AFP110K90PV02NHC60"]},
-  {cat:"xe-so",m:"Wave RSX",isNew:true,v:"Đặc Biệt",c:"Đen",g:23602909,mtoc:["AFP110K90PV01NHB25"]},
-  {cat:"xe-so",m:"Wave RSX",isNew:true,v:"Đặc Biệt",c:"Đỏ Đen",g:23602909,mtoc:["AFP110K90PV01R368"]},
-  {cat:"xe-so",m:"Wave RSX",isNew:true,v:"Tiêu Chuẩn",c:"Đen",g:22032000,mtoc:["AFP110K90PV00NHA76"]},
-  {cat:"xe-so",m:"Blade",v:"Thể Thao",c:"Đen",g:21943637,mtoc:["AFS110K57M0A8NHA76"]},
-  {cat:"xe-so",m:"Blade",v:"Thể Thao",c:"Đen Đỏ",g:21943637,mtoc:["AFS110K57M0A8R389"]},
-  {cat:"xe-so",m:"Blade",v:"Thể Thao",c:"Đen Xanh",g:21943637,mtoc:["AFS110K57M0A8PB421"]},
-  {cat:"xe-so",m:"Blade",v:"Đặc Biệt",c:"Đen",g:20470909,mtoc:["AFS110K57M0A0NHA76"]},
-  {cat:"xe-so",m:"Blade",v:"Tiêu Chuẩn",c:"Đen Đỏ",g:18900000,mtoc:["AFS110K57M0A3R389"]},
-  {cat:"xe-so",m:"Blade",v:"Tiêu Chuẩn",c:"Đen Xanh",g:18900000,mtoc:["AFS110K57M0A3PB421"]},
-  {cat:"xe-so",m:"Wave Alpha – Cổ Điển",v:"Cổ Điển",c:"Xám Đen",g:18939273,mtoc:["AFB110K89YV41NHC26"]},
-  {cat:"xe-so",m:"Wave Alpha – Cổ Điển",v:"Cổ Điển",c:"Xám Trắng",g:18939273,mtoc:["AFB110K89VV41NHC60"]},
-  {cat:"xe-so",m:"Wave Alpha 110",v:"Đặc Biệt",c:"Đen Nhám",g:18742909,mtoc:["AFB110K89RV30NHA76"]},
-  {cat:"xe-so",m:"Wave Alpha 110",v:"Tiêu Chuẩn",c:"Trắng",g:17859273,mtoc:["AFB110K89RV00NHB55"]},
-  {cat:"xe-so",m:"Wave Alpha 110",v:"Tiêu Chuẩn",c:"Xanh",g:17859273,mtoc:["AFB110K89RV00PB421"]},
-  {cat:"xe-so",m:"Wave Alpha 110",v:"Tiêu Chuẩn",c:"Đỏ",g:17859273,mtoc:["AFB110K89RV00R389"]},
-  {cat:"con-tay",m:"CBR150R",v:"Thể Thao",c:"Đỏ",g:73790000,mtoc:[]},
-  {cat:"con-tay",m:"CBR150R",v:"Đặc Biệt",c:"Đen Xám",g:73290000,mtoc:[]},
-  {cat:"con-tay",m:"CBR150R",v:"Tiêu Chuẩn",c:"Đen Đỏ",g:72290000,mtoc:[]},
-  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Thể Thao",c:"Đỏ Đen Trắng",g:50560000,mtoc:["FS150K2PNV16R389"]},
-  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Đặc Biệt",c:"Đen",g:50060000,mtoc:["FS150K2PNV15NHA76"]},
-  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Đặc Biệt",c:"Đỏ Đen",g:50060000,mtoc:["FS150K2PNV15R406"]},
-  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Đặc Biệt",c:"Xám Đen",g:50060000,mtoc:["FS150K2PNV15NHC60"]},
-  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Đặc Biệt",c:"Xanh Đen",g:50060000,mtoc:["FS150K2PNV15GY163"]},
-  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Tiêu Chuẩn",c:"Đen Bạc",g:46160000,mtoc:["FS150K2PNV10NHB25"]},
-  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Tiêu Chuẩn",c:"Đỏ Đen",g:46160000,mtoc:["FS150K2PNV10R389"]},
-  {cat:"pkl",m:"Gold Wing 2025",isNew:true,v:"Tiêu Chuẩn",c:"Vàng Bạc Đen / Đỏ Đen",g:1231500000,mtoc:[]},
-  {cat:"pkl",m:"CBR1000RR-R Fireblade SP 2024",v:"SP",c:"Đỏ Xanh Trắng",g:1051000000,mtoc:[]},
-  {cat:"pkl",m:"Africa Twin 2025 – Adventure Sports",isNew:true,v:"Adventure Sports",c:"Trắng Xanh Đen",g:620990000,mtoc:[]},
-  {cat:"pkl",m:"Africa Twin 2025 – Tiêu chuẩn",isNew:true,v:"Tiêu Chuẩn",c:"Đỏ Đen",g:540990000,mtoc:[]},
-  {cat:"pkl",m:"CB1000R 2023",v:"Black Edition",c:"Đen",g:525500000,mtoc:[]},
-  {cat:"pkl",m:"CB1000R 2023",v:"Tiêu Chuẩn",c:"Xanh Đen / Đỏ Đen",g:525500000,mtoc:[]},
-  {cat:"pkl",m:"Rebel 1100 2025",isNew:true,v:"DCT",c:"Đen",g:399990000,mtoc:[]},
-  {cat:"pkl",m:"CB1000 Hornet",isNew:true,v:"SP",c:"Đen",g:339900000,mtoc:[]},
-  {cat:"pkl",m:"Transalp 2025",isNew:true,v:"Tiêu Chuẩn",c:"Trắng Đen / Đen",g:299990000,mtoc:[]},
-  {cat:"pkl",m:"CBR650R 2024",v:"Tiêu Chuẩn",c:"Đỏ / Đen",g:264990000,mtoc:[]},
-  {cat:"pkl",m:"CB650R 2024",v:"Tiêu Chuẩn",c:"Đỏ Đen Xám / Đen Bạc",g:256990000,mtoc:[]},
-  {cat:"pkl",m:"NX500",v:"Tiêu Chuẩn",c:"Đỏ Đen / Đen / Trắng Đen",g:194290000,mtoc:[]},
-  {cat:"pkl",m:"CBR500R 2024",v:"Tiêu Chuẩn",c:"Đen / Đỏ",g:192990000,mtoc:[]},
-  {cat:"pkl",m:"CB500 Hornet",v:"Tiêu Chuẩn",c:"Đen / Đỏ Đen / Trắng Đen",g:184990000,mtoc:[]},
-  {cat:"pkl",m:"REBEL 500 2025",isNew:true,v:"Tiêu Chuẩn",c:"Đen / Trắng / Xám",g:181300000,mtoc:[]},
-  {cat:"pkl",m:"CL500",isNew:true,v:"Tiêu Chuẩn",c:"Đen / Nâu Đen",g:180990000,mtoc:[]},
-  {cat:"pkl",m:"CB350 H'ness",isNew:true,v:"CB350 H'ness",c:"Xám Đen / Đỏ Đen",g:129990000,mtoc:[]},
-  {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Thể Thao",c:"Xám",g:26803637,mtoc:["UGH9001GJRFV01NHC60"]},
-  {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Thể Thao",c:"Xanh",g:26803637,mtoc:["UGH9001GJRFV01GY163"]},
-  {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Đặc Biệt",c:"Bạc",g:26607273,mtoc:["UGH9001GJRFV02NHB18"]},
-  {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Cao Cấp",c:"Đen",g:26410909,mtoc:["UGH9001GJRFV00NHB25"]},
-  {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Cao Cấp",c:"Đỏ",g:26410909,mtoc:["UGH9001GJRFV00R368"]},
-  {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Cao Cấp",c:"Trắng",g:26410909,mtoc:["UGH9001GJRFV00NHD01"]},
-  {cat:"dien",m:"CUV e:",isNew:true,isEV:true,v:"Kèm 2 pin + 2 sạc",c:"—",g:65000000,mtoc:[]},
-  {cat:"dien",m:"CUV e:",isNew:true,isEV:true,v:"Không kèm pin (thuê 250k/tháng)",c:"—",g:45000000,mtoc:[]},
-  {cat:"dien",m:"Honda UC3",isNew:true,isEV:true,v:"Dự kiến mở bán tháng 6/2026",c:"—",g:null,mtoc:[]}
+  {cat:"tay-ga",m:"ADV350",isNew:true,v:"ADV350",c:"Đen/Đỏ Đen",cogs:158276190,g:166190000,mtoc:["ADV350K2LKV02NH436","ADV350K2LKV02R372"]},
+  {cat:"tay-ga",m:"ADV350",isNew:true,v:"ADV350",c:"Đen/Xanh Đen",cogs:158276190,g:166190000,mtoc:["ADV350K2LKV02NH436","ADV350K2LKV02PB413"]},
+  {cat:"tay-ga",m:"SH350i",v:"Thể Thao",c:"Xám Đen",cogs:138990909,g:152890000,mtoc:["SH350K1WKV10NHC60"]},
+  {cat:"tay-ga",m:"SH350i",v:"Thể Thao",c:"Xanh Đen",cogs:138990909,g:152890000,mtoc:["SH350K1WKV10GY163"]},
+  {cat:"tay-ga",m:"SH350i",v:"Đặc Biệt",c:"Xám Đen",cogs:138536364,g:152390000,mtoc:["SH350K1WKV11NHD03"]},
+  {cat:"tay-ga",m:"SH350i",v:"Cao Cấp",c:"Trắng Đen",cogs:137627273,g:151390000,mtoc:["SH350K1WKV00NHD01"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Thể Thao",c:"Xám Đen Đỏ",cogs:98575472,g:104490000,mtoc:["SH160K0SPV45NHC60"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Thể Thao",c:"Xanh Đen Đỏ",cogs:98575472,g:104490000,mtoc:["SH160K0SPV45GY163"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Đặc Biệt",c:"Xám Đen",cogs:98103774,g:103990000,mtoc:["SH160K0SPV25NHD03"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Cao Cấp",c:"Trắng Đen",cogs:96971698,g:102790000,mtoc:["SH160K0SPV05NHD14"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Cao Cấp",c:"Đỏ Đen",cogs:96971698,g:102790000,mtoc:["SH160K0SPV05R368"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Tiêu Chuẩn",c:"Đen",cogs:89896226,g:95290000,mtoc:["SH160K0SPV00NHB25"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH160i – Tiêu Chuẩn",c:"Trắng",cogs:89896226,g:95290000,mtoc:["SH160K0SPV00NHD01"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Thể Thao",c:"Xanh Đen Đỏ",cogs:80851801,g:85702909,mtoc:["SH125K0RPV45GY163"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Thể Thao",c:"Xám Đen Đỏ",cogs:80851801,g:85702909,mtoc:["SH125K0RPV45NHC60"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Đặc Biệt",c:"Xám Đen",cogs:80388679,g:85212000,mtoc:["SH125K0RPV25NHD03"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Cao Cấp",c:"Trắng Đen",cogs:79277187,g:84033818,mtoc:["SH125K0RPV05NHD14"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Tiêu Chuẩn",c:"Đen",cogs:72330359,g:76670182,mtoc:["SH125K0RPV00NHB25"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Tiêu Chuẩn",c:"Trắng",cogs:72330359,g:76670182,mtoc:["SH125K0RPV00NHD01"]},
+  {cat:"tay-ga",m:"SH160i / SH125i",isNew:true,v:"SH125i – Tiêu Chuẩn",c:"Đỏ",cogs:72330359,g:76670182,mtoc:["SH125K0RPV00R368"]},
+  {cat:"tay-ga",m:"SH Mode 125",v:"Thể Thao",c:"Xám Đen",cogs:60381818,g:64004727,mtoc:["FSH125K1NGV17NHC60"]},
+  {cat:"tay-ga",m:"SH Mode 125",v:"Đặc Biệt",c:"Đen",cogs:59918697,g:63513818,mtoc:["FSH125K1NGV13NHA76"]},
+  {cat:"tay-ga",m:"SH Mode 125",v:"Đặc Biệt",c:"Bạc Đen",cogs:59918697,g:63513818,mtoc:["FSH125K1NGV13NHB18"]},
+  {cat:"tay-ga",m:"SH Mode 125",v:"Cao Cấp",c:"Đỏ Đen",cogs:58807204,g:62335637,mtoc:["FSH125K1NGV16R368"]},
+  {cat:"tay-ga",m:"SH Mode 125",v:"Cao Cấp",c:"Xanh Đen",cogs:58807204,g:62335637,mtoc:["FSH125K1NGV16PB421"]},
+  {cat:"tay-ga",m:"SH Mode 125",v:"Tiêu Chuẩn",c:"Đỏ",cogs:54083362,g:57328363,mtoc:["FSH125K1NGV01R368"]},
+  {cat:"tay-ga",m:"SH Mode 125",v:"Tiêu Chuẩn",c:"Trắng",cogs:54083362,g:57328363,mtoc:["FSH125K1NGV01NHB35"]},
+  {cat:"tay-ga",m:"SH Mode 125",v:"Tiêu Chuẩn",c:"Xanh",cogs:54083362,g:57328363,mtoc:["FSH125K1NGV01PB421"]},
+  {cat:"tay-ga",m:"Vario 160",v:"Thể Thao",c:"Xám Đen Bạc",cogs:53481132,g:56690000,mtoc:["ACB160K2SGV11NHC60"]},
+  {cat:"tay-ga",m:"Vario 160",v:"Đặc Biệt",c:"Đỏ Đen Bạc",cogs:null,g:55990000,mtoc:[]},
+  {cat:"tay-ga",m:"Vario 160",v:"Cao Cấp",c:"Xanh Đen Bạc",cogs:null,g:52490000,mtoc:[]},
+  {cat:"tay-ga",m:"Vario 160",v:"Tiêu Chuẩn",c:"Đen Bạc",cogs:null,g:51990000,mtoc:[]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 160 – Thể Thao",c:"Trắng Đỏ Đen",cogs:55462264,g:58790000,mtoc:["ACA160K2ZGV03NHD14"]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 160 – Thể Thao",c:"Xám Đỏ Đen",cogs:55462264,g:58790000,mtoc:["ACA160K2ZFV03NHC60"]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 160 – Đặc Biệt",c:"Đen Xám",cogs:54990566,g:58290000,mtoc:["ACA160K2ZGV01NHA76"]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 160 – Tiêu Chuẩn",c:"Đỏ Đen",cogs:53858491,g:57090000,mtoc:["ACA160K2ZGV00R368"]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Marvel Spider-Man",c:"Đỏ Đen",cogs:null,g:48099273,mtoc:[]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Marvel Venom",c:"Đen",cogs:null,g:48099273,mtoc:[]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Thể Thao",c:"Trắng Đỏ Đen",cogs:45715325,g:48001091,mtoc:["ACA125K3AGV08NHD14"]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Thể Thao",c:"Xám Đỏ Đen",cogs:45715325,g:48001091,mtoc:["ACA125K3AGV08NHC60"]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Đặc Biệt",c:"Đen Xám",cogs:41507532,g:43582909,mtoc:["ACA125K3AGV01NHA76"]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Đặc Biệt",c:"Xanh Đen Xám",cogs:41507532,g:43582909,mtoc:["ACA125K3AGV01PB434"]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Tiêu Chuẩn",c:"Đen",cogs:40385454,g:42404727,mtoc:["ACA125K3AGV00NHB25"]},
+  {cat:"tay-ga",m:"Air Blade 160/125",isNew:true,v:"Air Blade 125 – Tiêu Chuẩn",c:"Đỏ Đen",cogs:40385454,g:42404727,mtoc:["ACA125K3AGV00R368"]},
+  {cat:"tay-ga",m:"LEAD ABS",isNew:true,v:"Đặc Biệt",c:"Đen Nâu",cogs:43658182,g:45841091,mtoc:["NHX125K2TJV02NHA76"]},
+  {cat:"tay-ga",m:"LEAD ABS",isNew:true,v:"Đặc Biệt",c:"Xanh Đen",cogs:43658182,g:45841091,mtoc:["NHX125K2TJV02NHC34"]},
+  {cat:"tay-ga",m:"LEAD ABS",isNew:true,v:"Đặc Biệt",c:"Bạc Đen",cogs:43658182,g:45841091,mtoc:["NHX125K2TJV02NHB18"]},
+  {cat:"tay-ga",m:"LEAD ABS",isNew:true,v:"Cao Cấp",c:"Trắng Đen",cogs:39917922,g:41913818,mtoc:["NHX125K2TJV01NHD14"]},
+  {cat:"tay-ga",m:"LEAD ABS",isNew:true,v:"Tiêu Chuẩn",c:"Đỏ Đen",cogs:37860779,g:39753818,mtoc:["NHX125K2TJV00R368"]},
+  {cat:"tay-ga",m:"Vario 125",v:"Thể Thao",c:"Xanh Đen",cogs:39450389,g:41422909,mtoc:["ACB125K2VGV02PB406"]},
+  {cat:"tay-ga",m:"Vario 125",v:"Đặc Biệt",c:"Đen",cogs:38982857,g:40932000,mtoc:["ACB125K2VGV03NH436"]},
+  {cat:"tay-ga",m:"Vario 125",v:"Đặc Biệt",c:"Đỏ Đen",cogs:38982857,g:40932000,mtoc:["ACB125K2VRV04R378M"]},
+  {cat:"tay-ga",m:"Vision",isNew:true,v:"Thể Thao",c:"Bạc Đen",cogs:35055585,g:36808363,mtoc:["NSC110K2CNV03NHB18","NSC110K2CNV08NHB18"]},
+  {cat:"tay-ga",m:"Vision",isNew:true,v:"Thể Thao",c:"Đen",cogs:35055585,g:36808363,mtoc:["NSC110K2CNV03NHA76","NSC110K2CNV08NHA76"]},
+  {cat:"tay-ga",m:"Vision",isNew:true,v:"Thể Thao",c:"Xám Đen",cogs:35055585,g:36808363,mtoc:["NSC110K2CNV03NHC60","NSC110K2CNV08NHC60"]},
+  {cat:"tay-ga",m:"Vision",isNew:true,v:"Đặc Biệt",c:"Nâu Xám",cogs:32904936,g:34550182,mtoc:["NSC110K2CNV06YR381","NSC110K2CNV01YR381"]},
+  {cat:"tay-ga",m:"Vision",isNew:true,v:"Cao Cấp",c:"Đỏ Xám",cogs:31595844,g:33175637,mtoc:["NSC110K2CNV02R368","NSC110K2CNV07R368"]},
+  {cat:"tay-ga",m:"Vision",isNew:true,v:"Tiêu Chuẩn",c:"Trắng Đen",cogs:30006234,g:31506545,mtoc:["NSC110K2CNV05NHD01","NSC110K2CNV00NHD01"]},
+  {cat:"xe-so",m:"Super Cub C125",v:"Đặc Biệt",c:"Đen Mờ",cogs:82519039,g:87470182,mtoc:["C125K0GJ161NH303"]},
+  {cat:"xe-so",m:"Super Cub C125",v:"Tiêu Chuẩn",c:"Xanh Xám – Yên Nâu",cogs:81592796,g:86488363,mtoc:["C125K0GJ061B241"]},
+  {cat:"xe-so",m:"Super Cub C125",v:"Tiêu Chuẩn",c:"Xanh Dương – Yên Đỏ",cogs:81592796,g:86488363,mtoc:["C125K0GJ061NHB95"]},
+  {cat:"xe-so",m:"CT125",isNew:true,v:"CT125",c:"Xám Đen",cogs:81129673,g:85997455,mtoc:[]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Tiêu Chuẩn",c:"Xanh Đen",cogs:29164675,g:30622909,mtoc:["AFS125K73Y0V0PB421"]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Cao Cấp",c:"Trắng Đen Đỏ",cogs:30286753,g:31801091,mtoc:["AFS125K73Y0V1NHB55"]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Cao Cấp",c:"Xám Đen Xanh",cogs:30286753,g:31801091,mtoc:["AFS125K73Y0V1NHC26"]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Cao Cấp",c:"Đỏ Đen Trắng",cogs:30286753,g:31801091,mtoc:["AFS125K73Y0V1R350"]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Đặc Biệt",c:"Bạc Đen Xám",cogs:30754286,g:32292000,mtoc:["AFS125K73Y1V1NHC35"]},
+  {cat:"xe-so",m:"Future 125 FI",isNew:true,v:"Đặc Biệt",c:"Xanh Đen Bạc",cogs:30754286,g:32292000,mtoc:["AFS125K73Y1V1NHC34"]},
+  {cat:"xe-so",m:"Wave RSX",isNew:true,v:"Thể Thao",c:"Xanh Đen",cogs:24442598,g:25664727,mtoc:["AFP110K90PV02PB421"]},
+  {cat:"xe-so",m:"Wave RSX",isNew:true,v:"Thể Thao",c:"Đỏ Đen",cogs:24442598,g:25664727,mtoc:["AFP110K90PV02R389"]},
+  {cat:"xe-so",m:"Wave RSX",isNew:true,v:"Thể Thao",c:"Xám Đen",cogs:24442598,g:25664727,mtoc:["AFP110K90PV02NHC60"]},
+  {cat:"xe-so",m:"Wave RSX",isNew:true,v:"Đặc Biệt",c:"Đen",cogs:22572468,g:23701091,mtoc:["AFP110K90PV01NHB25"]},
+  {cat:"xe-so",m:"Wave RSX",isNew:true,v:"Đặc Biệt",c:"Đỏ Đen",cogs:22572468,g:23701091,mtoc:["AFP110K90PV01R368"]},
+  {cat:"xe-so",m:"Wave RSX",isNew:true,v:"Tiêu Chuẩn",c:"Đen",cogs:21076364,g:22130182,mtoc:["AFP110K90PV00NHA76"]},
+  {cat:"xe-so",m:"Blade",v:"Thể Thao",c:"Đen",cogs:null,g:21943637,mtoc:["AFS110K57M0A8NHA76"]},
+  {cat:"xe-so",m:"Blade",v:"Thể Thao",c:"Đen Đỏ",cogs:null,g:21943637,mtoc:["AFS110K57M0A8R389"]},
+  {cat:"xe-so",m:"Blade",v:"Thể Thao",c:"Đen Xanh",cogs:null,g:21943637,mtoc:["AFS110K57M0A8PB421"]},
+  {cat:"xe-so",m:"Blade",v:"Đặc Biệt",c:"Đen",cogs:null,g:20470909,mtoc:["AFS110K57M0A0NHA76"]},
+  {cat:"xe-so",m:"Blade",v:"Tiêu Chuẩn",c:"Đen Đỏ",cogs:null,g:18900000,mtoc:["AFS110K57M0A3R389"]},
+  {cat:"xe-so",m:"Blade",v:"Tiêu Chuẩn",c:"Đen Xanh",cogs:null,g:18900000,mtoc:["AFS110K57M0A3PB421"]},
+  {cat:"xe-so",m:"Wave Alpha – Cổ Điển",v:"Cổ Điển",c:"Xám Đen",cogs:18130909,g:19037455,mtoc:["AFB110K89YV41NHC26"]},
+  {cat:"xe-so",m:"Wave Alpha – Cổ Điển",v:"Cổ Điển",c:"Xám Trắng",cogs:18130909,g:19037455,mtoc:["AFB110K89VV41NHC60"]},
+  {cat:"xe-so",m:"Wave Alpha 110",v:"Đặc Biệt",c:"Đen Nhám",cogs:17943895,g:18841091,mtoc:["AFB110K89RV30NHA76"]},
+  {cat:"xe-so",m:"Wave Alpha 110",v:"Tiêu Chuẩn",c:"Trắng",cogs:17102338,g:17957455,mtoc:["AFB110K89RV00NHB55"]},
+  {cat:"xe-so",m:"Wave Alpha 110",v:"Tiêu Chuẩn",c:"Xanh",cogs:17102338,g:17957455,mtoc:["AFB110K89RV00PB421"]},
+  {cat:"xe-so",m:"Wave Alpha 110",v:"Tiêu Chuẩn",c:"Đỏ",cogs:17102338,g:17957455,mtoc:["AFB110K89RV00R389"]},
+  {cat:"con-tay",m:"CBR150R",v:"Thể Thao",c:"Đỏ",cogs:null,g:73790000,mtoc:[]},
+  {cat:"con-tay",m:"CBR150R",v:"Đặc Biệt",c:"Đen Xám",cogs:null,g:73290000,mtoc:[]},
+  {cat:"con-tay",m:"CBR150R",v:"Tiêu Chuẩn",c:"Đen Đỏ",cogs:null,g:72290000,mtoc:[]},
+  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Thể Thao",c:"Đỏ Đen Trắng",cogs:47439252,g:50760000,mtoc:["FS150K2PNV16R389"]},
+  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Đặc Biệt",c:"Đen",cogs:46971963,g:50260000,mtoc:["FS150K2PNV15NHA76"]},
+  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Đặc Biệt",c:"Đỏ Đen",cogs:46971963,g:50260000,mtoc:["FS150K2PNV15R406"]},
+  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Đặc Biệt",c:"Xám Đen",cogs:46971963,g:50260000,mtoc:["FS150K2PNV15NHC60"]},
+  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Đặc Biệt",c:"Xanh Đen",cogs:46971963,g:50260000,mtoc:["FS150K2PNV15GY163"]},
+  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Tiêu Chuẩn",c:"Đen Bạc",cogs:43327103,g:46360000,mtoc:["FS150K2PNV10NHB25"]},
+  {cat:"con-tay",m:"WINNER R",isNew:true,v:"Tiêu Chuẩn",c:"Đỏ Đen",cogs:43327103,g:46360000,mtoc:["FS150K2PNV10R389"]},
+  {cat:"pkl",m:"Gold Wing 2025",isNew:true,v:"Tiêu Chuẩn",c:"Vàng Bạc Đen / Đỏ Đen",cogs:null,g:1231500000,mtoc:[]},
+  {cat:"pkl",m:"CBR1000RR-R Fireblade SP 2024",v:"SP",c:"Đỏ Xanh Trắng",cogs:null,g:1051000000,mtoc:[]},
+  {cat:"pkl",m:"Africa Twin 2025 – Adventure Sports",isNew:true,v:"Adventure Sports",c:"Trắng Xanh Đen",cogs:null,g:620990000,mtoc:[]},
+  {cat:"pkl",m:"Africa Twin 2025 – Tiêu chuẩn",isNew:true,v:"Tiêu Chuẩn",c:"Đỏ Đen",cogs:null,g:540990000,mtoc:[]},
+  {cat:"pkl",m:"CB1000R 2023",v:"Black Edition",c:"Đen",cogs:null,g:525500000,mtoc:[]},
+  {cat:"pkl",m:"CB1000R 2023",v:"Tiêu Chuẩn",c:"Xanh Đen / Đỏ Đen",cogs:null,g:525500000,mtoc:[]},
+  {cat:"pkl",m:"Rebel 1100 2025",isNew:true,v:"DCT",c:"Đen",cogs:null,g:399990000,mtoc:[]},
+  {cat:"pkl",m:"CB1000 Hornet",isNew:true,v:"SP",c:"Đen",cogs:null,g:339900000,mtoc:[]},
+  {cat:"pkl",m:"Transalp 2025",isNew:true,v:"Tiêu Chuẩn",c:"Trắng Đen / Đen",cogs:null,g:299990000,mtoc:[]},
+  {cat:"pkl",m:"CBR650R 2024",v:"Tiêu Chuẩn",c:"Đỏ / Đen",cogs:null,g:264990000,mtoc:[]},
+  {cat:"pkl",m:"CB650R 2024",v:"Tiêu Chuẩn",c:"Đỏ Đen Xám / Đen Bạc",cogs:null,g:256990000,mtoc:[]},
+  {cat:"pkl",m:"NX500",v:"Tiêu Chuẩn",c:"Đỏ Đen / Đen / Trắng Đen",cogs:null,g:194290000,mtoc:[]},
+  {cat:"pkl",m:"CBR500R 2024",v:"Tiêu Chuẩn",c:"Đen / Đỏ",cogs:null,g:192990000,mtoc:[]},
+  {cat:"pkl",m:"CB500 Hornet",v:"Tiêu Chuẩn",c:"Đen / Đỏ Đen / Trắng Đen",cogs:null,g:184990000,mtoc:[]},
+  {cat:"pkl",m:"REBEL 500 2025",isNew:true,v:"Tiêu Chuẩn",c:"Đen / Trắng / Xám",cogs:null,g:181300000,mtoc:[]},
+  {cat:"pkl",m:"CL500",isNew:true,v:"Tiêu Chuẩn",c:"Đen / Nâu Đen",cogs:null,g:180990000,mtoc:[]},
+  {cat:"pkl",m:"CB350 H'ness",isNew:true,v:"CB350 H'ness",c:"Xám Đen / Đỏ Đen",cogs:null,g:129990000,mtoc:[]},
+  {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Thể Thao",c:"Xám",cogs:19916883,g:20912727,mtoc:["UGH9001GJRFV01NHC60"]},
+  {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Thể Thao",c:"Xanh",cogs:19916883,g:20912727,mtoc:["UGH9001GJRFV01GY163"]},
+  {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Đặc Biệt",c:"Bạc",cogs:19729870,g:20716363,mtoc:["UGH9001GJRFV02NHB18"]},
+  {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Cao Cấp",c:"Đen",cogs:19542857,g:20520000,mtoc:["UGH9001GJRFV00NHB25"]},
+  {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Cao Cấp",c:"Đỏ",cogs:19542857,g:20520000,mtoc:["UGH9001GJRFV00R368"]},
+  {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Cao Cấp",c:"Trắng",cogs:19542857,g:20520000,mtoc:["UGH9001GJRFV00NHD01"]},
+  {cat:"dien",m:"CUV e:",isNew:true,isEV:true,v:"Kèm 2 pin + 2 sạc",c:"Đen nhám / Trắng ngọc trai",cogs:null,g:65000000,mtoc:[]},
+  {cat:"dien",m:"CUV e:",isNew:true,isEV:true,v:"Không kèm pin (kèm 2 sạc)",c:"Đen nhám / Trắng ngọc trai",cogs:41680961,g:44181818,mtoc:[]},
+  {cat:"dien",m:"Honda UC3",isNew:true,isEV:true,v:"Đặc Biệt",c:"Đen thiên thạch",cogs:75396227,g:79920000,mtoc:[]},
+  {cat:"dien",m:"Honda UC3",isNew:true,isEV:true,v:"Tiêu Chuẩn",c:"Xanh Tahiti / Trắng ngọc trai",cogs:74099486,g:78545455,mtoc:[]}
 ];
 
 const catLabels={"tay-ga":"🛵 Xe tay ga","xe-so":"🏍️ Xe số","con-tay":"⚙️ Xe côn tay","pkl":"🏎️ Xe phân khối lớn","dien":"⚡ Xe điện"};
-const catOrder=["tay-ga","xe-so","con-tay","pkl","dien"];
+const catOrder=["tay-ga","xe-so","con-tay","dien"];
 
-function lpTB(g){return Math.round(g*0.02);}
+function lpTB(g){return Math.ceil(g*0.02/10000)*10000;}
 function lpBien(g,kv){
   if(kv==2) return 150000;
   if(g<=15000000) return 700000;
@@ -612,6 +645,8 @@ function render(){
       <th style="width:195px">Phiên bản</th>
       <th style="width:110px">Màu sắc</th>
       <th style="width:160px">Mã MTOC</th>
+      <th class="num" style="width:110px">Biên độ</th>
+      <th class="num" style="width:120px">COGS</th>
       <th class="num" style="width:120px">Giá đề xuất</th>
       <th class="num" style="width:100px">LPTB 2%</th>
       <th class="num" style="width:105px">Phí biển số</th>
@@ -623,17 +658,21 @@ function render(){
         const tb=r.g!==null?lpTB(r.g):null;
         const bs=r.g!==null?lpBien(r.g,kv):null;
         const total=r.g!==null?r.g+tb+bs:null;
+        const cogs=(r.cogs!==undefined?r.cogs:null);
+        const margin=(r.g!==null&&cogs!==null)?r.g-cogs:null;
         shown++;
         if(r.mtoc.length) withMtoc+=r.mtoc.length;
         const mtocHtml=r.mtoc.length
           ?r.mtoc.map(mc=>`<span class="${q&&mc.toLowerCase().includes(q)?'mtoc-hl':'mtoc-code'}">${mc}</span>`).join('<br>')
           :`<span class="mtoc-none">chưa có</span>`;
-        html+=`<tr>`;
+        html+=`<tr data-mkey="${cat}__${modelName}">`;
         if(i===0) html+=`<td class="td-model" rowspan="${mRows.length}">${modelName}${r.isNew?'<span class="badge-new">Mới</span>':''}${r.isEV?'<span class="badge-ev">Điện</span>':''}</td>`;
         if(r.g===null){
-          html+=`<td class="muted">${r.v}</td><td class="muted">—</td><td>${mtocHtml}</td><td class="muted" style="text-align:right">—</td><td class="muted" style="text-align:right">—</td><td class="muted" style="text-align:right">—</td><td class="td-total-na">Chưa có giá</td>`;
+          html+=`<td class="muted">${r.v}</td><td class="muted">—</td><td>${mtocHtml}</td><td class="muted" style="text-align:right">—</td><td class="muted" style="text-align:right">—</td><td class="muted" style="text-align:right">—</td><td class="muted" style="text-align:right">—</td><td class="muted" style="text-align:right">—</td><td class="td-total-na">Chưa có giá</td>`;
         } else {
           html+=`<td>${r.v}</td><td>${r.c}</td><td>${mtocHtml}</td>
+          <td class="td-margin">${margin!==null?fmt(margin):'<span class="cogs-na">—</span>'}</td>
+          <td class="td-cogs">${cogs!==null?fmt(cogs):'<span class="cogs-na">—</span>'}</td>
           <td class="num">${fmt(r.g)}</td>
           <td class="num">${fmt(tb)}</td>
           <td class="num">${fmt(bs)}</td>
@@ -660,6 +699,22 @@ document.querySelectorAll('.fbtn').forEach(btn=>btn.addEventListener('click',fun
   activeCat=this.dataset.cat;
   render();
 }));
+
+// Highlight tất cả các dòng cùng một model khi trỏ chuột
+const mainEl=document.getElementById('main');
+function clearHl(){mainEl.querySelectorAll('tr.row-hl').forEach(r=>r.classList.remove('row-hl'));}
+mainEl.addEventListener('mouseover',function(e){
+  const tr=e.target.closest('tr[data-mkey]');
+  if(!tr){clearHl();return;}
+  const k=tr.getAttribute('data-mkey');
+  if(tr.classList.contains('row-hl')) return; // đã highlight nhóm này rồi
+  clearHl();
+  mainEl.querySelectorAll('tr[data-mkey]').forEach(r=>{
+    if(r.getAttribute('data-mkey')===k) r.classList.add('row-hl');
+  });
+});
+mainEl.addEventListener('mouseleave',clearHl);
+
 render();
 </script>
 </body>
