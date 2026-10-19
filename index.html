@@ -615,10 +615,10 @@ const rows=[
   {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Cao Cấp",c:"Đen",cogs:19542857,g:20520000,mtoc:["UGH9001GJRFV00NHB25"]},
   {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Cao Cấp",c:"Đỏ",cogs:19542857,g:20520000,mtoc:["UGH9001GJRFV00R368"]},
   {cat:"dien",m:"ICON e:",isNew:true,isEV:true,v:"Cao Cấp",c:"Trắng",cogs:19542857,g:20520000,mtoc:["UGH9001GJRFV00NHD01"]},
-  {cat:"dien",m:"CUV e:",isNew:true,isEV:true,v:"Kèm 2 pin + 2 sạc",c:"Đen nhám",cogs:61680961,g:64181818,mtoc:["EVP4K3NFV01NH436"]},
-  {cat:"dien",m:"CUV e:",isNew:true,isEV:true,v:"Kèm 2 pin + 2 sạc",c:"Trắng ngọc trai",cogs:61680961,g:64181818,mtoc:["EVP4K3NFV01NHC85"]},
-  {cat:"dien",m:"CUV e:",isNew:true,isEV:true,v:"Không kèm pin (kèm 2 sạc)",c:"Đen nhám",cogs:41680961,g:44181818,mtoc:["EVP4K3NFV01NH436"]},
-  {cat:"dien",m:"CUV e:",isNew:true,isEV:true,v:"Không kèm pin (kèm 2 sạc)",c:"Trắng ngọc trai",cogs:41680961,g:44181818,mtoc:["EVP4K3NFV01NHC85"]},
+  {cat:"dien",m:"CUV e:",isNew:true,isEV:true,lptb:890000,v:"Kèm 2 pin + 2 sạc",c:"Đen nhám",cogs:61680961,g:64181818,mtoc:["EVP4K3NFV01NH436"]},
+  {cat:"dien",m:"CUV e:",isNew:true,isEV:true,lptb:890000,v:"Kèm 2 pin + 2 sạc",c:"Trắng ngọc trai",cogs:61680961,g:64181818,mtoc:["EVP4K3NFV01NHC85"]},
+  {cat:"dien",m:"CUV e:",isNew:true,isEV:true,lptb:890000,v:"Không kèm pin (kèm 2 sạc)",c:"Đen nhám",cogs:41680961,g:44181818,mtoc:["EVP4K3NFV01NH436"]},
+  {cat:"dien",m:"CUV e:",isNew:true,isEV:true,lptb:890000,v:"Không kèm pin (kèm 2 sạc)",c:"Trắng ngọc trai",cogs:41680961,g:44181818,mtoc:["EVP4K3NFV01NHC85"]},
   {cat:"dien",m:"Honda UC3",isNew:true,isEV:true,v:"Đặc Biệt",c:"Đen thiên thạch",cogs:75396227,g:79920000,mtoc:["RST9004K4HAV07NHB01"]},
   {cat:"dien",m:"Honda UC3",isNew:true,isEV:true,v:"Tiêu Chuẩn",c:"Xanh Tahiti",cogs:74099486,g:78545455,mtoc:["RST9004K4HAV06PB446"]},
   {cat:"dien",m:"Honda UC3",isNew:true,isEV:true,v:"Tiêu Chuẩn",c:"Trắng ngọc trai",cogs:74099486,g:78545455,mtoc:["RST9004K4HAV06NHD26"]}
@@ -669,7 +669,7 @@ function render(){
     for(const modelName of models){
       const mRows=catRows.filter(r=>r.m===modelName);
       mRows.forEach((r,i)=>{
-        const tb=r.g!==null?lpTB(r.g):null;
+        const tb=r.g!==null?(r.lptb??lpTB(r.g)):null;
         const bs=r.g!==null?lpBien(r.g,kv):null;
         const total=r.g!==null?r.g+tb+bs:null;
         const cogs=(r.cogs!==undefined?r.cogs:null);
